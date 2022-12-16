@@ -24,16 +24,25 @@ public class ProductServiceController {
     //method untuk menambahkan data secara manual
     private static Map<String, Product> productRepo = new HashMap<>();
    static {
-      Product honey = new Product();
-      honey.setId("1");
-      honey.setName("Honey");
-      productRepo.put(honey.getId(), honey);
-      
-      Product almond = new Product();
-      almond.setId("2");
-      almond.setName("Almond");
-      productRepo.put(almond.getId(), almond);
+        Product honey = new Product();
+        honey.setId("1");
+        honey.setName("Honey");
+        honey.setPrice(20000);
+        honey.setNumber(2);
+        honey.setTotal();
+        productRepo.put(honey.getId(), honey);
+
+        Product almond = new Product();
+        almond.setId("2");
+        almond.setName("Almond");
+        almond.setPrice(20000);
+        almond.setNumber(3);
+        almond.setTotal();
+        productRepo.put(almond.getId(), honey);
+            
+  
    }
+   
    //method untuk delete data
    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
    public ResponseEntity<Object> delete(@PathVariable("id") String id) { 
@@ -62,18 +71,20 @@ public class ProductServiceController {
             return new ResponseEntity<>("Id Product is already exist", HttpStatus.OK); 
         }
       //kondisi jika ketika create data ID tidak di isi atau kosong
-      else if(!productRepo.containsKey(product.getId())){ 
+      else if(productRepo.containsKey(product.getId().equals("''"))){ 
             return new ResponseEntity<>("Id Product should be fill", HttpStatus.OK); 
         } 
       //kondisi jika success/berhasil meng create data
       else{
             productRepo.put(product.getId(), product);
+            product.setTotal();
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
         }
    }
    //method untuk membaca atau menampilkan product
    @RequestMapping(value = "/products")
    public ResponseEntity<Object> getProduct() {
+       
       return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
    }
 }
